@@ -1,5 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { VueLoaderPlugin } = require('vue-loader')
 module.exports = {
   mode: "production",
   entry: "./src/main.js",
@@ -12,6 +13,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "./public/index.html"),
     }),
+    new VueLoaderPlugin()
   ],
   devServer: {
     open: true,
@@ -49,7 +51,11 @@ module.exports = {
     {
       test: /\.js$/,
       use:["babel-loader"],
+    },
+    {
+      test: /\.vue$/,
+      loader: 'vue-loader'
     }
-    ],
+      ],
   },
 };
