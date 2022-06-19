@@ -21,3 +21,4 @@ document.body.appendChild(gif)
 import './assets/fonts/iconfont.css'
 
 import App from './app.vue'
+

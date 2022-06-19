@@ -1,6 +1,9 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { VueLoaderPlugin } = require('vue-loader')
+const { VueLoaderPlugin } = require("vue-loader");
+const EslintWebpackPlugin = require("eslint-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
 module.exports = {
   mode: "production",
   entry: "./src/main.js",
@@ -13,7 +16,11 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "./public/index.html"),
     }),
-    new VueLoaderPlugin()
+    new VueLoaderPlugin(),
+    new EslintWebpackPlugin({
+      context: path.join(__dirname, "src/"),
+    }),
+    new MiniCssExtractPlugin(),
   ],
   devServer: {
     open: true,
@@ -31,31 +38,35 @@ module.exports = {
       },
       {
         test: /\.gif$/,
-        type:"asset",
-        parser:{
-          dataUrlCondition:{
-            maxSize:2*1024
-          }
+        type: "asset",
+        parser: {
+          dataUrlCondition: {
+            maxSize: 2 * 1024,
+          },
         },
         generator: {
-          filename: 'images/[hash:6][ext]'
-        }
+          filename: "images/[hash:6][ext]",
+        },
       },
-      { 
+      {
         test: /\.(eot|svg|ttf|woff|woff2)$/,
-        type: 'asset/resource',
+        type: "asset/resource",
         generator: {
-          filename: 'fonts/[hash:6][ext]'
-        }
-    },
-    {
-      test: /\.js$/,
-      use:["babel-loader"],
-    },
-    {
-      test: /\.vue$/,
-      loader: 'vue-loader'
-    }
-      ],
+          filename: "fonts/[hash:6][ext]",
+        },
+      },
+      {
+        test: /\.js$/,
+        use: ["babel-loader"],
+      },
+      {
+        test: /\.vue$/,
+        loader: "vue-loader",
+      },
+      {
+        test: /\.css$/i,
+        use: [MiniCssExtractPlugin.loader, "css-loader"],
+      },
+    ],
   },
 };
